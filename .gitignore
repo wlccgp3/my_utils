@@ -1,0 +1,10 @@
+# python:
+*.py[cod]
+.idea/
+__pycache__/
+venv/
+tags
+*.log
+tests/
+temp/
+my_utils.egg-info/
