@@ -133,7 +133,7 @@ def form_decode(values):
         return None
 
     try:
-        result = {item.split('=')[0]: item.split('=')[1] for item in values.split('&')}
+        result = {item.split('=')[0]: item.split('=')[1] for item in values.split('&') if item}
     except Exception as e:
         logger.warning(e)
     else:
