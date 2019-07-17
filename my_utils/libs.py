@@ -104,7 +104,7 @@ def cookie_to_dict(values):
     return cookies
 
 
-def form_encode(values):
+def form_encode(values, sort=True):
     """dict转用&拼接的参数
 
     >>> data = {'name': 'miles', 'age': 1}
@@ -114,7 +114,9 @@ def form_encode(values):
     if not isinstance(values, dict):
         return None
     try:
-        keys = sorted(values.keys())
+        keys = values.keys()
+        if sort:
+            keys = sorted(keys)
     except Exception as e:
         logger.warning('{}: {}'.format(values, e))
     else:
