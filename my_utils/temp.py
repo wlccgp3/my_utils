@@ -18,7 +18,7 @@ def get_proxy(url):
         logger.warning(e)
         time.sleep(10)
     else:
-        msg = result.get('msg', '')
+        msg = result.get('message', '')
         if msg == 'success':
             return result['data']
 
