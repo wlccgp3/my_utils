@@ -17,9 +17,18 @@ __all__ = [
 logger = SHlogger(__name__).logger
 
 
-class MagicBase(object):
+class MetaClass(type):
+    _instances = {}
+
+    def __new__(mcs, name, bases, attrs, **kwargs):
+        del attrs['__qualname__']
+        return type.__new__(mcs, bases[0].__name__, bases, attrs, **kwargs)
+
+
+class MagicBase(object, metaclass=MetaClass):
     """try except 封装
     """
+
     def __init__(self, func, default=None):
         self.func = func
         self.default = default
@@ -31,7 +40,7 @@ class MagicBase(object):
             return self.default
 
 
-class MagicList(list):
+class MagicList(list, metaclass=MetaClass):
     """基于list封装，取不到元素不报错，返回None
 
     >>> MagicList([1, 2])[0]
@@ -39,6 +48,7 @@ class MagicList(list):
     >>> print(MagicList([1, 2])[2])
     None
     """
+
     def __getitem__(self, item):
         return MagicBase(list.__getitem__)(self, item)
         # try:
@@ -56,19 +66,20 @@ class MagicList(list):
         return MagicBase(list.pop)(self, index)
 
 
-class MagicStr(str):
+class MagicStr(str, metaclass=MetaClass):
     """基于str封装，取不到元素不报错，返回None
 
-    >>> MagicList('python')[0]
+    >>> MagicStr('python')[0]
     'p'
-    >>> print(MagicList('python')[10])
+    >>> print(MagicStr('python')[10])
     None
     """
+
     def __getitem__(self, item):
         return MagicBase(str.__getitem__)(self, item)
 
 
-class MagicDict(dict):
+class MagicDict(dict, metaclass=MetaClass):
     """基于dict封装，可以点方式获取元素，取不到元素不报错，返回None
 
     >>> MagicDict({'name': 'miles'}).name
@@ -94,6 +105,7 @@ class MagicDict(dict):
 
 class TakeFirst(object):
     """获取可迭代对象的第一个元素"""
+
     def __init__(self, default=None):
         self.default = default
 
@@ -108,6 +120,7 @@ class TakeFirst(object):
 
 class Identity(object):
     """对输入不处理"""
+
     def __call__(self, values):
         return values
 
@@ -248,6 +261,7 @@ class DateToBack(object):
 
 class CheckName(object):
     """检测姓名的有效性"""
+
     def __init__(self, default=None):
         self.default = default
 
@@ -263,6 +277,7 @@ class CheckName(object):
 
 class CheckSurname(object):
     """检测姓氏的有效性"""
+
     def __init__(self, default=None):
         self.default = default
 
@@ -276,6 +291,7 @@ class CheckSurname(object):
 
 class FormatTime(object):
     """格式化时间格式"""
+
     def __init__(self, pattern=None):
         self.patterns = [
             r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}[\D]a',
@@ -300,4 +316,3 @@ class FormatTime(object):
                 return None
         else:
             return values.datetime
-
