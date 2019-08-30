@@ -18,8 +18,8 @@ logger = SHlogger(__name__).logger
 
 
 class MetaClass(type):
-    _instances = {}
-
+    """将Magic类修改成原始类，比如MagicStr -> str
+    """
     def __new__(mcs, name, bases, attrs, **kwargs):
         del attrs['__qualname__']
         return type.__new__(mcs, bases[0].__name__, bases, attrs, **kwargs)

@@ -56,7 +56,7 @@ def get_dir_path(file_path, dirname='.'):
         raise Exception('input "{}" is error'.format(dirname))
 
 
-def header_to_dict(values):
+def header_to_dict(values, default=None):
     """HTTP字符串headers转字典
 
     >>> HEADERS = '''
@@ -74,7 +74,7 @@ def header_to_dict(values):
      'X-Anit-Forge-Token': ''}
     """
     if not isinstance(values, str):
-        return None
+        return default
     headers = {}
     for i in values.split('\n'):
         if i.strip():
@@ -83,7 +83,7 @@ def header_to_dict(values):
     return headers
 
 
-def cookie_to_dict(values):
+def cookie_to_dict(values, default=None):
     """HTTP字符串cookies转字典
 
     >>> cookies = 'a=111111111;b=222'
@@ -91,7 +91,7 @@ def cookie_to_dict(values):
     {'a': '111111111', 'b': '222'}
     """
     if not isinstance(values, str):
-        return None
+        return default
     cookies = {}
     for i in values.split(';'):
         if i.strip():
@@ -124,7 +124,7 @@ def form_encode(values, sort=True):
         return result
 
 
-def form_decode(values):
+def form_decode(values, default=None):
     """用&拼接的参数转换成dict
 
     >>> data = 'name=miles&age=1'
@@ -132,7 +132,7 @@ def form_decode(values):
     data = {'name': 'miles', 'age': 1}
     """
     if not isinstance(values, str):
-        return None
+        return default
 
     try:
         result = {item.split('=')[0]: item.split('=')[1] for item in values.split('&') if item}
