@@ -5,6 +5,7 @@
 import re
 import arrow
 from datetime import datetime
+from collections import Iterable
 from .mapping import BAIJIAXING
 from .logger import SHlogger
 
@@ -110,7 +111,7 @@ class TakeFirst(object):
         self.default = default
 
     def __call__(self, values):
-        if values:
+        if isinstance(values, Iterable):
             for value in values:
                 if value is not None and value != '':
                     return value

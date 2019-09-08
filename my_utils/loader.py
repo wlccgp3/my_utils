@@ -116,6 +116,9 @@ class JmesList(list):
 class JmesLoader(object):
     """base on jmespath, http://jmespath.org/tutorial.html
 
+    列表中有字符串一定要用单引号，比如：
+        JmesLoader(result).node("data[?object.question.type=='question']").getall()
+
     >>> src_data = {
             "people": [
                 {"first": "James", "last": "d"},

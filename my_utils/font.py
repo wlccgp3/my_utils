@@ -32,7 +32,7 @@ class MagicFont(object):
         self.limit = set() if limit is None else set(limit)
         self.fill = fill
 
-    def to_pil_iter(self):
+    def to_pil_iter(self, resize=None):
         gs = self.font_data.getGlyphSet()
         for ucode, name in self.font_data.getBestCmap().items():
             if self.limit:
@@ -54,18 +54,19 @@ class MagicFont(object):
             d.add(g)
 
             data = renderPM.drawToPIL(d)
+            if resize:
+                data = data.resize(resize)
+
             yield ucode, data
 
-    def to_pil(self):
+    def to_pil(self, resize=None):
         font_mapping = {}
-        for ucode, data in self.to_pil_iter():
+        for ucode, data in self.to_pil_iter(resize):
             font_mapping.update({ucode: data})
         return font_mapping
 
     def to_img_iter(self, resize=None, fmt='png'):
-        for ucode, data in self.to_pil_iter():
-            if resize:
-                data = data.resize(resize)
+        for ucode, data in self.to_pil_iter(resize):
             b = BytesIO()
             data.save(b, format=fmt)
             yield ucode, b.getvalue()
@@ -81,9 +82,7 @@ class MagicFont(object):
             os.makedirs(dir_path, exist_ok=True)
 
         if os.path.isdir(dir_path):
-            for ucode, data in self.to_pil_iter():
-                if resize:
-                    data = data.resize(resize)
+            for ucode, data in self.to_pil_iter(resize):
                 file_path = os.path.join(dir_path, '{}.png'.format(ucode))
                 data.save(file_path, format=fmt)
 
