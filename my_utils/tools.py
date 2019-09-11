@@ -125,6 +125,8 @@ class TakeFirst(object):
             for value in values:
                 if value is not None and value != '':
                     return value
+                else:
+                    return self.default
         else:
             return self.default
 
