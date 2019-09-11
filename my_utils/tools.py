@@ -103,6 +103,16 @@ class MagicDict(dict, metaclass=MetaClass):
     def __getitem__(self, item):
         return MagicBase(dict.__getitem__)(self, item)
 
+    def incr(self, value, amount=1):
+        exists = self.get(value)
+        if exists is None:
+            self.setdefault(value, amount)
+        else:
+            self[value] += amount
+
+    def sort(self, reverse=False):
+        return sorted(self.items(), key=lambda item: item[1], reverse=reverse)
+
 
 class TakeFirst(object):
     """获取可迭代对象的第一个元素"""
@@ -317,3 +327,4 @@ class FormatTime(object):
                 return None
         else:
             return values.datetime
+
