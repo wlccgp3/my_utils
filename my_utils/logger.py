@@ -12,26 +12,27 @@ class ColoredStreamHandler(logging.StreamHandler):
     COLOR_CYLE = [GREEN, YELLOW, BLUE, MAGENTA, CYAN]
     RESET = '\033[0m'
 
-    def __init__(self, spider_id=None):
+    def __init__(self):
         logging.StreamHandler.__init__(self)
-        self.spider_id = spider_id
 
     def format(self, record):
-        spider_id = record.process if self.spider_id is None else self.spider_id
-
         datefmt = '%m-%d %H:%M:%S'
         COLOR = self.COLOR_CYLE[record.process % len(self.COLOR_CYLE)]
+        if record.name == 'root':
+            name = '%(module)s'
+        else:
+            name = '%(name)s'
 
         if record.levelno == 10:
-            FORMAT = '{}%(asctime)s [{} %(module)s_%(lineno)d] |{} {}%(message)s{}'. \
-                format(COLOR, spider_id, self.RESET, '', '')
+            message = '%(message)s'
         elif record.levelno == 20:
-            FORMAT = '{}%(asctime)s [{} %(module)s_%(lineno)d] |{} {}%(message)s{}'. \
-                format(COLOR, spider_id, self.RESET, self.GREEN, self.RESET)
+            message = '{}%(message)s{}'.format(self.GREEN, self.RESET)
         else:
-            FORMAT = '{}%(asctime)s [{} %(module)s_%(lineno)d] |{} {}%(message)s{}'. \
-                format(COLOR, spider_id, self.RESET, self.RED, self.RESET)
+            message = '{}%(message)s{}'.format(self.RED, self.RESET)
 
+        FORMAT = '{}%(asctime)s [{} %(funcName)s_%(lineno)d] |{} {}'.format(
+            COLOR, name, self.RESET, message
+        )
         fmt = logging.Formatter(fmt=FORMAT, datefmt=datefmt)
         return fmt.format(record)
 
@@ -53,10 +54,10 @@ class SHlogger(object):
     >>> logger = SHlogger(__name__).logger
     """
     def __init__(self, name=None, level=logging.DEBUG):
-        self.logger = logging.getLogger('{}'.format(name))
+        self.logger = logging.getLogger(name)
         if not self.logger.hasHandlers():
             self.logger.setLevel(level)
-            self.sh = ColoredStreamHandler(name)
+            self.sh = ColoredStreamHandler()
             self.sh.setLevel(level)
             self.logger.addHandler(self.sh)
 
