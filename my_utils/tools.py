@@ -11,7 +11,7 @@ from .logger import SHlogger
 
 __all__ = [
     'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeOne', 'Identity', 'Strip', 'Split', 'ReSplit',
-    'ReFind', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
+    'ReFind', 'ReSub', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
     'FormatTime',
 ]
 
@@ -181,6 +181,20 @@ class ReFind(object):
             return MagicList(re.findall(self.pattern, values, self.flags))
         else:
             return MagicList()
+
+
+class ReSub(object):
+    def __init__(self, pattern, repl, count=0, flags=re.S):
+        self.pattern = pattern
+        self.repl = repl
+        self.count = count
+        self.flags = flags
+
+    def __call__(self, values):
+        if isinstance(values, str):
+            return MagicStr(re.sub(self.pattern, self.repl, values, self.count, self.flags))
+        else:
+            return MagicStr()
 
 
 class Join(object):
