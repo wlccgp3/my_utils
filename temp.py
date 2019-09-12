@@ -1,13 +1,9 @@
-from my_utils import SHlogger
 
+from my_utils import ItemLoader
+from my_utils.tools import *
 
-logger = SHlogger('aaaaa').logger
+page_source = open('/Users/miles/Desktop/demo.html', 'r', encoding='utf-8').read()
+loader = ItemLoader(text=page_source)
 
-
-def run():
-    logger.debug('1111111')
-    logger.info('1111111')
-    logger.warning('1111111')
-
-
-run()
+a = loader.css('.aaa ::text').proc(ReFind(r'\d+'), op=TakeOne(default=0))
+print(a)

@@ -10,7 +10,7 @@ from .mapping import BAIJIAXING
 from .logger import SHlogger
 
 __all__ = [
-    'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
+    'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeOne', 'Identity', 'Strip', 'Split', 'ReSplit',
     'ReFind', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
     'FormatTime',
 ]
@@ -114,20 +114,17 @@ class MagicDict(dict, metaclass=MetaClass):
         return sorted(self.items(), key=lambda item: item[1], reverse=reverse)
 
 
-class TakeFirst(object):
-    """获取可迭代对象的第一个元素"""
+class TakeOne(object):
+    """获取可迭代对象的一个元素，默认取第一个，默认返回None"""
 
-    def __init__(self, default=None):
+    def __init__(self, index=0, default=None):
+        self.index = index
         self.default = default
 
     def __call__(self, values):
-        if isinstance(values, Iterable):
-            for value in values:
-                if value is not None and value != '':
-                    return value
-                else:
-                    return self.default
-        else:
+        try:
+            return values[self.index]
+        except Exception:
             return self.default
 
 
