@@ -148,7 +148,3 @@ class Mongo(object):
         if doc:
             with open(filepath, 'wb') as fp:
                 fp.write(doc['data'])
-
-
-if __name__ == '__main__':
-    pass

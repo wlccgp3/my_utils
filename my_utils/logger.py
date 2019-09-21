@@ -11,9 +11,6 @@ class ColoredStreamHandler(logging.StreamHandler):
     BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = ['\033[0;{}m'.format(i) for i in range(30, 38)]
     RESET = '\033[0m'
 
-    # def __init__(self):
-    #     logging.StreamHandler.__init__(self)
-
     def format(self, record):
         datefmt = '%Y-%m-%d %H:%M:%S'
 
