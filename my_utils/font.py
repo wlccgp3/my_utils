@@ -85,18 +85,3 @@ class MagicFont(object):
             for ucode, data in self.to_pil_iter(resize):
                 file_path = os.path.join(dir_path, '{}.png'.format(ucode))
                 data.save(file_path, format=fmt)
-
-
-if __name__ == '__main__':
-    import time
-    import matplotlib.pyplot as plt
-    a = time.time()
-    font_path = '/Users/miles/Documents/data/font/微软正黑体.ttf'
-    data_mapping = MagicFont(font_path, limit=range(0x4e00, 0x4e00+100)).to_pil_iter()
-    for ucode, data in data_mapping:
-        pass
-        # print(ucode, chr(ucode))
-        # plt.imshow(data)
-        # plt.show()
-    b = time.time()
-    print(b - a)

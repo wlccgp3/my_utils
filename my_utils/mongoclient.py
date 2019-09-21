@@ -4,7 +4,6 @@ import os
 import base64
 from typing import Optional, Union
 from pymongo import MongoClient
-from bson.objectid import ObjectId
 from .logger import SHlogger
 
 __all__ = ['Mongo']
