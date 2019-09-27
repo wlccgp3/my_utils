@@ -29,17 +29,18 @@ class MagicFont(object):
             font_path = BytesIO(font_path)
 
         self.font_data = TTFont(font_path)
-        self.limit = set() if limit is None else set(limit)
+        self.limit = limit
         self.fill = fill
 
     def to_pil_iter(self, resize=None):
         gs = self.font_data.getGlyphSet()
-        for ucode, name in self.font_data.getBestCmap().items():
-            if self.limit:
-                if ucode not in self.limit:
-                    continue
+        cmap = self.font_data.getBestCmap()
+        ucodes = cmap.keys()
+        if self.limit:
+            ucodes = self.limit
 
-            g = gs[name]
+        for ucode in ucodes:
+            g = gs[cmap.get(ucode)]
             if not hasattr(g._glyph, 'coordinates'):
                 continue
 

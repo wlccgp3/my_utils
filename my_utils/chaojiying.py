@@ -5,10 +5,10 @@ import requests
 from hashlib import md5
 
 
-__all__ = ['cjy_client']
+__all__ = ['Chaojiying']
 
 
-class ChaojiyingClient(object):
+class Chaojiying(object):
     def __init__(self, username, password, soft_id):
         self.username = username
         password = password.encode('utf8')
@@ -57,10 +57,8 @@ class ChaojiyingClient(object):
         return r.json()
 
 
-cjy_client = ChaojiyingClient('wlccgp3', 'wlcc1991', '897109')
-
-
 if __name__ == '__main__':
+    cjy_client = Chaojiying('wlccgp3', 'wlcc1991', '897109')
     im = open('/Users/wanli/Documents/collector/miles/spider/liepin/18681441681.png', 'rb').read()
     print(cjy_client.PostPic(im, 9104))
 
