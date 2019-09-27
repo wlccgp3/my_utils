@@ -40,7 +40,11 @@ class MagicFont(object):
             ucodes = self.limit
 
         for ucode in ucodes:
-            g = gs[cmap.get(ucode)]
+            name = cmap.get(ucode)
+            if name is None:
+                continue
+
+            g = gs[name]
             if not hasattr(g._glyph, 'coordinates'):
                 continue
 
