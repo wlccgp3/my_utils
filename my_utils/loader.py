@@ -2,7 +2,7 @@
 from jmespath import search, compile
 from parsel.selector import Selector, SelectorList
 from parsel.utils import flatten, extract_regex
-from .tools import MagicList, MagicDict, MagicStr, TakeOne, Identity
+from .tools import MagicList, MagicDict, MagicStr, TakeFirst, Identity
 from .logger import SHlogger
 
 __all__ = ['ItemLoader', 'JmesLoader', 'ComposeLoader']
@@ -32,7 +32,7 @@ class CustomSelectorList(SelectorList):
         values = op(values)
         return self._save_mode(values)
 
-    def proc(self, *processors, op=TakeOne()):
+    def proc(self, *processors, op=TakeFirst()):
         op = Identity() if op is None else op
         return self._get_value(self.getall(), *processors, op=op)
 
@@ -43,7 +43,7 @@ class ItemLoader(Selector):
     >>> loader = ItemLoader(text=r.text)
     >>> tr_list = loader.css('.standard-table tbody tr')
     >>> for tr in tr_list:
-            print(tr.xpath('./td[1]//text()').proc(ReFind(r'\S+')))  # default op=TakeOne()
+            print(tr.xpath('./td[1]//text()').proc(ReFind(r'\S+')))  # default op=TakeFirst()
             print(tr.xpath('./td[2]//text()').proc(ReFind(r'\S+'), op=Join()))
             print(tr.xpath('./td[3]//text()').proc(lambda x: x.split('/')), op=None)
             print(tr.xpath('./td[4]//text()').getall()
@@ -71,7 +71,7 @@ class ItemLoader(Selector):
         values = op(values)
         return self._save_mode(values)
 
-    def proc(self, *processors, op=TakeOne()):
+    def proc(self, *processors, op=TakeFirst()):
         op = Identity() if op is None else op
         return self._get_value(self.getall(), *processors, op=op)
 
@@ -108,7 +108,7 @@ class JmesList(list):
     def getall(self):
         return [x.getall() for x in self]
 
-    def proc(self, *processors, op=TakeOne()):
+    def proc(self, *processors, op=TakeFirst()):
         op = Identity() if op is None else op
         return self._get_value(self.getall(), *processors, op=op)
 
@@ -134,7 +134,7 @@ class JmesLoader(object):
     >>> loader.node('people[?keys(@)[?starts_with(@, `first`)]]')
     >>> for item in loader.node('people[?keys(@)[?starts_with(@, `first`)]]'):
             b = item.node('first').proc(lambda x: x.upper(), op=None)
-            c = item.node('firsts').proc(lambda x: x.upper())         # default op=TakeOne()
+            c = item.node('firsts').proc(lambda x: x.upper())         # default op=TakeFirst()
             d = item.node('last').proc()
             e = item.node('last').getall()
             print(a, b, c, d, e)
@@ -211,6 +211,6 @@ class ComposeLoader(object):
         values = op(values)
         return self._save_mode(values)
 
-    def proc(self, *processors, op=TakeOne()):
+    def proc(self, *processors, op=TakeFirst()):
         op = Identity() if op is None else op
         return self._get_value(self.src_data, *processors, op=op)

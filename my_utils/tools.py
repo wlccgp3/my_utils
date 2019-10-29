@@ -10,9 +10,9 @@ from .mapping import BAIJIAXING
 from .logger import SHlogger
 
 __all__ = [
-    'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeOne', 'Identity', 'Strip', 'Split', 'ReSplit',
+    'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
     'ReFind', 'ReSub', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
-    'FormatTime',
+    'FormatTime', 'TakeByIndex'
 ]
 
 logger = SHlogger(__name__).logger
