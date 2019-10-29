@@ -114,7 +114,7 @@ class MagicDict(dict, metaclass=MetaClass):
         return sorted(self.items(), key=lambda item: item[1], reverse=reverse)
 
 
-class TakeOne(object):
+class TakeByIndex(object):
     """获取可迭代对象的一个元素，默认取第一个，默认返回None"""
 
     def __init__(self, index=0, default=None):
@@ -125,6 +125,20 @@ class TakeOne(object):
         try:
             return values[self.index]
         except Exception:
+            return self.default
+
+
+class TakeFirst(object):
+    """获取可迭代对象的第一个不为空元素"""
+    def __init__(self, default=None):
+        self.default = default
+
+    def __call__(self, values):
+        if values:
+            for value in values:
+                if value is not None and value != '':
+                    return value
+        else:
             return self.default
 
 
