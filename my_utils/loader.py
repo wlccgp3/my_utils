@@ -5,7 +5,7 @@ from parsel.utils import flatten, extract_regex
 from .tools import MagicList, MagicDict, MagicStr, TakeOne, Identity
 from .logger import SHlogger
 
-__all__ = ['ItemLoader', 'JmesLoader']
+__all__ = ['ItemLoader', 'JmesLoader', 'ComposeLoader']
 
 logger = SHlogger(__name__).logger
 
@@ -179,3 +179,38 @@ class JmesLoader(object):
         data = repr(self.getall())
         return "<%s node=%r data=%s>" % (type(self).__name__, self._expr, data)
     __repr__ = __str__
+
+
+class ComposeLoader(object):
+    def __init__(self, src_data):
+        if src_data is None:
+            self.src_data = []
+        elif isinstance(src_data, (list, tuple)):
+            self.src_data = src_data
+        else:
+            self.src_data = [src_data]
+
+    @staticmethod
+    def _save_mode(values):
+        if isinstance(values, str):
+            return MagicStr(values)
+        elif isinstance(values, list):
+            return MagicList(values)
+        else:
+            return values
+
+    def _get_value(self, values, *processors, op=None):
+        values = self._save_mode(values)
+        for proc in processors:
+            if values is None:
+                break
+            try:
+                values = flatten(proc(value) for value in values if value)
+            except Exception as e:
+                break
+        values = op(values)
+        return self._save_mode(values)
+
+    def proc(self, *processors, op=TakeOne()):
+        op = Identity() if op is None else op
+        return self._get_value(self.src_data, *processors, op=op)
