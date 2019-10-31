@@ -40,20 +40,24 @@ def random_password(length=8, chars=string.ascii_letters + string.digits):
     return ''.join([random.choice(chars) for _ in range(length)])
 
 
-def get_dir_path(file_path, dirname='.'):
-    """获取目录路径
+def get_dir_path(file_dir_path, dirname='.'):
+    """获取目录路径，如果目录不存在则报错
 
     >>> get_dir_path(__file__, '.')     # cur_dir
     '/Users/wanli/Documents/my_py_tools'
     >>> get_dir_path(__file__, '..')    # parent_dir
     '/Users/wanli/Documents'
+    >>> get_dir_path(/data/temp, '..')  # /data/temp is no exists
+    raise err
     """
-    file_dir_path = os.path.dirname(os.path.abspath(file_path))
+    if os.path.isfile(file_dir_path):
+        file_dir_path = os.path.dirname(os.path.abspath(file_dir_path))
+
     dir_path = os.path.abspath(os.path.join(file_dir_path, dirname))
     if os.path.exists(dir_path):
         return dir_path
     else:
-        raise Exception('input "{}" is error'.format(dirname))
+        raise Exception('"{}" is no exists'.format(dir_path))
 
 
 def header_to_dict(values, default=None):

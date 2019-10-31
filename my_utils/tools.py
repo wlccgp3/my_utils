@@ -5,7 +5,6 @@
 import re
 import arrow
 from datetime import datetime
-from collections import Iterable
 from .mapping import BAIJIAXING
 from .logger import SHlogger
 
@@ -52,10 +51,6 @@ class MagicList(list, metaclass=MetaClass):
 
     def __getitem__(self, item):
         return MagicBase(list.__getitem__)(self, item)
-        # try:
-        #     return list.__getitem__(self, item)
-        # except Exception as e:
-        #     return None
 
     def get(self, item, default=None):
         result = MagicBase(list.__getitem__)(self, item)
@@ -94,11 +89,11 @@ class MagicDict(dict, metaclass=MetaClass):
     __delattr__ = dict.__delitem__
 
     def __getattr__(*args):
-        values = dict.get(*args)
-        if type(values) is dict:
-            return MagicDict(values)
+        value = dict.get(*args)
+        if type(value) is dict:
+            return MagicDict(value)
         else:
-            return values
+            return value
 
     def __getitem__(self, item):
         return MagicBase(dict.__getitem__)(self, item)
@@ -153,11 +148,11 @@ class Strip(object):
     def __init__(self, chars=None):
         self.chars = chars
 
-    def __call__(self, values):
-        if isinstance(values, str):
-            return values.strip(self.chars)
+    def __call__(self, value: str):
+        if isinstance(value, str):
+            return value.strip(self.chars)
         else:
-            return values
+            return value
 
 
 class Split(object):
@@ -165,9 +160,9 @@ class Split(object):
         self.sep = sep
         self.maxsplit = maxsplit
 
-    def __call__(self, values):
-        if isinstance(values, str):
-            return MagicList(values.split(sep=self.sep, maxsplit=self.maxsplit))
+    def __call__(self, value: str):
+        if isinstance(value, str):
+            return MagicList(value.split(sep=self.sep, maxsplit=self.maxsplit))
         else:
             return MagicList()
 
@@ -178,11 +173,11 @@ class ReSplit(object):
         self.maxsplit = maxsplit
         self.flags = flags
 
-    def __call__(self, values):
-        if isinstance(values, str):
-            return MagicList(re.split(self.pattern, values, self.maxsplit, self.flags))
+    def __call__(self, value: str):
+        if isinstance(value, str):
+            return MagicList(re.split(self.pattern, value, self.maxsplit, self.flags))
         else:
-            return values
+            return value
 
 
 class ReFind(object):
@@ -190,9 +185,9 @@ class ReFind(object):
         self.pattern = pattern
         self.flags = flags
 
-    def __call__(self, values):
-        if isinstance(values, str):
-            return MagicList(re.findall(self.pattern, values, self.flags))
+    def __call__(self, value: str):
+        if isinstance(value, str):
+            return MagicList(re.findall(self.pattern, value, self.flags))
         else:
             return MagicList()
 
@@ -204,9 +199,9 @@ class ReSub(object):
         self.count = count
         self.flags = flags
 
-    def __call__(self, values):
-        if isinstance(values, str):
-            return MagicStr(re.sub(self.pattern, self.repl, values, self.count, self.flags))
+    def __call__(self, value: str):
+        if isinstance(value, str):
+            return MagicStr(re.sub(self.pattern, self.repl, value, self.count, self.flags))
         else:
             return MagicStr()
 
@@ -225,9 +220,9 @@ class ToInt(object):
     def __init__(self, default=None):
         self.default = default
 
-    def __call__(self, values):
+    def __call__(self, value: str):
         try:
-            result = int(float(values))
+            result = int(float(value))
         except Exception as e:
             return self.default
         else:
@@ -237,11 +232,11 @@ class ToInt(object):
 class ToAge(object):
     """出生日期转年龄"""
 
-    def __call__(self, values):
-        if isinstance(values, str):
-            date = FormatTime()(values)
-        elif isinstance(values, datetime):
-            date = values
+    def __call__(self, value):
+        if isinstance(value, str):
+            date = FormatTime()(value)
+        elif isinstance(value, datetime):
+            date = value
         else:
             date = None
 
@@ -254,7 +249,7 @@ class ToAge(object):
 class HighestDegree(object):
     """找出最高学历"""
 
-    def __call__(self, values):
+    def __call__(self, value):
         degree_mapping = {
             5: '博士',
             4: '硕士',
@@ -263,7 +258,7 @@ class HighestDegree(object):
         }
         seen = set()
         for k, v in degree_mapping.items():
-            match = ReFind(v)(values)[0]
+            match = ReFind(v)(value)[0]
             if match:
                 seen.add(k)
         if seen:
@@ -303,14 +298,14 @@ class CheckName(object):
     def __init__(self, default=None):
         self.default = default
 
-    def __call__(self, values):
-        if not isinstance(values, str):
+    def __call__(self, value):
+        if not isinstance(value, str):
             return self.default
-        if '先生' in values or '女士' in values or len(values) < 2:
+        if '先生' in value or '女士' in value or len(value) < 2:
             return self.default
-        if MagicStr(values)[0] not in BAIJIAXING.keys():
+        if MagicStr(value)[0] not in BAIJIAXING.keys():
             return self.default
-        return values
+        return value
 
 
 class CheckSurname(object):
@@ -319,10 +314,10 @@ class CheckSurname(object):
     def __init__(self, default=None):
         self.default = default
 
-    def __call__(self, values):
-        if not isinstance(values, str):
+    def __call__(self, value):
+        if not isinstance(value, str):
             return self.default
-        surname = MagicStr(values)[0]
+        surname = MagicStr(value)[0]
         if surname in BAIJIAXING.keys():
             return surname
 
@@ -344,14 +339,14 @@ class FormatTime(object):
         if pattern:
             self.patterns.insert(0, pattern)
 
-    def __call__(self, values):
+    def __call__(self, value):
         try:
-            values = arrow.get(values, self.patterns)
+            value = arrow.get(value, self.patterns)
         except Exception as e:
             try:
-                return arrow.get(values).to('local').datetime
+                return arrow.get(value).to('local').datetime
             except Exception as e:
                 return None
         else:
-            return values.datetime
+            return value.datetime
 
