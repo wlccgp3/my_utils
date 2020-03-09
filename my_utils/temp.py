@@ -6,7 +6,7 @@ import requests
 
 __all__ = ['get_proxy']
 
-logger = logging.getLogger('my_utils')
+logger = logging.getLogger(__name__)
 
 
 def get_proxy(url):

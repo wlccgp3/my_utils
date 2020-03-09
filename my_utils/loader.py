@@ -7,7 +7,7 @@ from .tools import MagicList, MagicDict, MagicStr, TakeFirst, Identity
 
 __all__ = ['ItemLoader', 'JmesLoader', 'ComposeLoader']
 
-logger = logging.getLogger('my_utils')
+logger = logging.getLogger(__name__)
 
 
 class CustomSelectorList(SelectorList):

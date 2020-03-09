@@ -14,7 +14,7 @@ __all__ = [
     'FormatTime', 'TakeByIndex'
 ]
 
-logger = logging.getLogger('my_utils')
+logger = logging.getLogger(__name__)
 
 
 class MetaClass(type):

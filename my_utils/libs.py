@@ -13,7 +13,7 @@ __all__ = [
     'form_encode', 'form_decode', 'base64_decode'
 ]
 
-logger = logging.getLogger('my_utils')
+logger = logging.getLogger(__name__)
 
 
 def base64_decode(base64_str):

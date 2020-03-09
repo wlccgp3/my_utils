@@ -5,7 +5,7 @@ from pymongo import MongoClient
 
 __all__ = ['Mongo']
 
-logger = logging.getLogger('my_utils')
+logger = logging.getLogger(__name__)
 
 
 class Mongo(object):

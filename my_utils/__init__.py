@@ -8,7 +8,7 @@ from .libs import *
 from .temp import *
 
 
-logger = logging.getLogger('my_utils')
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter(
