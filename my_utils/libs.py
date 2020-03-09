@@ -5,15 +5,15 @@ import time
 import base64
 import random
 import string
+import logging
 from datetime import datetime
-from .logger import SHlogger
 
 __all__ = [
     'timer', 'random_password', 'get_dir_path', 'header_to_dict', 'cookie_to_dict',
     'form_encode', 'form_decode', 'base64_decode'
 ]
 
-logger = SHlogger(__name__).logger
+logger = logging.getLogger('my_utils')
 
 
 def base64_decode(base64_str):

@@ -4,9 +4,9 @@
 
 import re
 import arrow
+import logging
 from datetime import datetime
 from .mapping import BAIJIAXING
-from .logger import SHlogger
 
 __all__ = [
     'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
@@ -14,7 +14,7 @@ __all__ = [
     'FormatTime', 'TakeByIndex'
 ]
 
-logger = SHlogger(__name__).logger
+logger = logging.getLogger('my_utils')
 
 
 class MetaClass(type):
@@ -84,19 +84,20 @@ class MagicDict(dict, metaclass=MetaClass):
     None
     """
 
-    # __getattr__ = dict.__getitem__
-    __setattr__ = dict.__setitem__
-    __delattr__ = dict.__delitem__
-
-    def __getattr__(*args):
-        value = dict.get(*args)
-        if type(value) is dict:
-            return MagicDict(value)
-        else:
-            return value
-
     def __getitem__(self, item):
-        return MagicBase(dict.__getitem__)(self, item)
+        if item not in self.keys():
+            self[item] = MagicDict()
+        return super(MagicDict, self).__getitem__(item)
+
+    def __setitem__(self, name, value):
+        if isinstance(value, (list, tuple)):
+            value = [self.__class__(x) if isinstance(x, dict) else x for x in value]
+        elif isinstance(value, dict) and not isinstance(value, self.__class__):
+            value = self.__class__(value)
+        super(MagicDict, self).__setitem__(name, value)
+
+    __getattr__ = __getitem__
+    __setattr__ = __setitem__
 
     def incr(self, value, amount=1):
         exists = self.get(value)

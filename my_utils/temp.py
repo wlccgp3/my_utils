@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
 import time
+import logging
 import requests
-from .logger import SHlogger
-
-logger = SHlogger(__name__).logger
 
 __all__ = ['get_proxy']
+
+logger = logging.getLogger('my_utils')
 
 
 def get_proxy(url):

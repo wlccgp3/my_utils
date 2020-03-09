@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+import logging
 from jmespath import search, compile
 from parsel.selector import Selector, SelectorList
 from parsel.utils import flatten, extract_regex
 from .tools import MagicList, MagicDict, MagicStr, TakeFirst, Identity
-from .logger import SHlogger
 
 __all__ = ['ItemLoader', 'JmesLoader', 'ComposeLoader']
 
-logger = SHlogger(__name__).logger
+logger = logging.getLogger('my_utils')
 
 
 class CustomSelectorList(SelectorList):
@@ -173,11 +173,13 @@ class JmesLoader(object):
 
     def __bool__(self):
         return bool(self.getall())
+
     __nonzero__ = __bool__
 
     def __str__(self):
         data = repr(self.getall())
         return "<%s node=%r data=%s>" % (type(self).__name__, self._expr, data)
+
     __repr__ = __str__
 
 

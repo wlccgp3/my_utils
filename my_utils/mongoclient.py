@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
-import base64
-from typing import Optional, Union
+import logging
 from pymongo import MongoClient
-from .logger import SHlogger
 
 __all__ = ['Mongo']
 
-logger = SHlogger(__name__).logger
+logger = logging.getLogger('my_utils')
 
 
 class Mongo(object):
