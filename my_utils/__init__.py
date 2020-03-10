@@ -13,7 +13,7 @@ logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter(
     '%(asctime)s [%(levelname)s %(name)s %(lineno)d] | %(message)s',
-    datefmt='%Y-%m-%dT%H:%M:%S'
+    datefmt='%Y-%m-%d %H:%M:%S'
 )
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.INFO)
