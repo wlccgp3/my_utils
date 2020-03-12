@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
-import time
 import base64
 import random
 import string
 import logging
-from datetime import datetime
 
 __all__ = [
-    'timer', 'random_password', 'get_dir_path', 'header_to_dict', 'cookie_to_dict',
+    'random_password', 'get_dir_path', 'header_to_dict', 'cookie_to_dict',
     'form_encode', 'form_decode', 'base64_decode'
 ]
 
@@ -24,16 +22,6 @@ def base64_decode(base64_str):
         base64_str += '=' * missing_padding
 
     return base64.urlsafe_b64decode(base64_str).decode('utf-8')
-
-
-def timer(hour, sleep=600):
-    last_day = datetime.now().day
-    while True:
-        cur_day = datetime.now().day
-        cur_hour = datetime.now().hour
-        if (cur_day != last_day) and (cur_hour > hour):
-            break
-        time.sleep(sleep)
 
 
 def random_password(length=8, chars=string.ascii_letters + string.digits):
