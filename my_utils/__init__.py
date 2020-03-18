@@ -8,8 +8,7 @@ from .temp import *
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format='%(asctime)s [%(levelname).1s] [%(name)s %(lineno)d] | %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    format='%(asctime)s [%(levelname).1s] [%(filename)s %(lineno)d] | %(message)s',
 )
 
 logger = logging.getLogger(__name__)
