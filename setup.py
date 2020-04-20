@@ -24,7 +24,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/wlccgp3/my_utils.git',
-    packages=setuptools.find_packages(where='.', exclude=('tests', 'temp'), include=('*', )),
+    packages=setuptools.find_packages(exclude=('tests', 'temp')),
     install_requires=install_requires,
     classifiers=[
         'Programming Language :: Python :: 3',
