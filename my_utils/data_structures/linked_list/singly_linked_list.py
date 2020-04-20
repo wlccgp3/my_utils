@@ -1,3 +1,6 @@
+from typing import Iterator
+
+
 class Node:  # create a Node
     def __init__(self, data):
         self.data = data  # given data
@@ -8,8 +11,11 @@ class Node:  # create a Node
 
 
 class LinkedList:
-    def __init__(self):
+    def __init__(self, items: Iterator = None):
         self.head = None  # initialize head to None
+        if items:
+            for item in items:
+                self.insert_head(item)
 
     def insert_tail(self, data) -> None:
         if self.head is None:
