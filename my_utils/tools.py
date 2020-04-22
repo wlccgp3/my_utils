@@ -25,7 +25,7 @@ class MetaClass(type):
         return type.__new__(mcs, bases[0].__name__, bases, attrs, **kwargs)
 
 
-class MagicBase(object):
+class MagicBase(object, metaclass=MetaClass):
     """try except 封装
     """
 
@@ -40,7 +40,7 @@ class MagicBase(object):
             return self.default
 
 
-class MagicList(list):
+class MagicList(list, metaclass=MetaClass):
     """基于list封装，取不到元素不报错，返回None
 
     >>> MagicList([1, 2])[0]
@@ -62,7 +62,7 @@ class MagicList(list):
         return MagicBase(list.pop)(self, index)
 
 
-class MagicStr(str):
+class MagicStr(str, metaclass=MetaClass):
     """基于str封装，取不到元素不报错，返回None
 
     >>> MagicStr('python')[0]
@@ -75,7 +75,7 @@ class MagicStr(str):
         return MagicBase(str.__getitem__)(self, item)
 
 
-class MagicDict(dict):
+class MagicDict(dict, metaclass=MetaClass):
     """基于dict封装，可以点方式获取元素，取不到元素不报错，返回None
 
     >>> MagicDict({'name': 'miles'}).name
