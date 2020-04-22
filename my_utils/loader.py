@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-import logging
-from jmespath import search, compile
+from jmespath import compile
 from parsel.selector import Selector, SelectorList
-from parsel.utils import flatten, extract_regex
-from .tools import MagicList, MagicDict, MagicStr, TakeFirst, Identity
+from parsel.utils import flatten
+
+from .tools import Identity, MagicList, MagicStr, TakeFirst
 
 __all__ = ['ItemLoader', 'JmesLoader', 'ComposeLoader']
-
-logger = logging.getLogger(__name__)
 
 
 class CustomSelectorList(SelectorList):

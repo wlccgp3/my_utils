@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import logging
-from .useragent import random_ua
-from .loader import *
+
 from .libs import *
+from .loader import *
 from .temp import *
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s [%(levelname).1s] [%(filename)s %(funcName)s %(lineno)d] | %(message)s',
-)
-
-logger = logging.getLogger(__name__)
+from .useragent import random_ua

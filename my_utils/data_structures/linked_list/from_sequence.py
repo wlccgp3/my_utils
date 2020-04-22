@@ -3,8 +3,8 @@
 
 
 class Node:
-    def __init__(self, data=None):
-        self.data = data
+    def __init__(self, val=None):
+        self.val = val
         self.next = None
 
     def __repr__(self):
@@ -12,7 +12,7 @@ class Node:
         string_rep = ""
         temp = self
         while temp:
-            string_rep += f"<{temp.data}> ---> "
+            string_rep += f"Node({temp.val}) --> "
             temp = temp.next
         string_rep += "<END>"
         return string_rep
@@ -30,15 +30,16 @@ def make_linked_list(elements_list):
     head = Node(elements_list[0])
     current = head
     # Loop through elements from position 1
-    for data in elements_list[1:]:
-        current.next = Node(data)
+    for val in elements_list[1:]:
+        current.next = Node(val)
         current = current.next
     return head
 
 
-list_data = [1, 3, 5, 32, 44, 12, 43]
-print(f"List: {list_data}")
-print("Creating Linked List from List.")
-linked_list = make_linked_list(list_data)
-print("Linked List:")
-print(linked_list)
+if __name__ == '__main__':
+    list_val = [1, 3, 5, 32, 44, 12, 43]
+    print(f"List: {list_val}")
+    print("Creating Linked List from List.")
+    linked_list = make_linked_list(list_val)
+    print("Linked List:")
+    print(linked_list)

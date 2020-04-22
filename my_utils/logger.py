@@ -3,8 +3,19 @@
 
 import logging
 
+__all__ = ['SHlogger', 'logger']
 
-__all__ = ['SHlogger']
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter(
+    '%(asctime)s [%(levelname).1s] [%(filename)s %(funcName)s %(lineno)d] | %(message)s',
+)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+stream_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
 
 
 class ColoredStreamHandler(logging.StreamHandler):
@@ -47,6 +58,7 @@ class SHlogger(object):
     >>> logger = SHlogger().logger
     >>> logger = SHlogger(__name__).logger
     """
+
     def __init__(self, name=None, level=logging.DEBUG):
         self.logger = logging.getLogger(name)
         if not self.logger.hasHandlers():
@@ -54,4 +66,3 @@ class SHlogger(object):
             self.sh = ColoredStreamHandler()
             self.sh.setLevel(level)
             self.logger.addHandler(self.sh)
-

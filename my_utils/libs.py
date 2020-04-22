@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
 import base64
+import os
 import random
 import string
-import logging
+
+from .logger import logger
 
 __all__ = [
     'random_password', 'get_dir_path', 'header_to_dict', 'cookie_to_dict',
     'form_encode', 'form_decode', 'base64_decode'
 ]
-
-logger = logging.getLogger(__name__)
 
 
 def base64_decode(base64_str):

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import time
-import logging
+
 import requests
 
-__all__ = ['get_proxy']
+from .logger import logger
 
-logger = logging.getLogger(__name__)
+__all__ = ['get_proxy']
 
 
 def get_proxy(url):

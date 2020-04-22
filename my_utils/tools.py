@@ -3,9 +3,10 @@
 # 该模块主要用于loader做处理函数，也可以单独使用
 
 import re
-import arrow
-import logging
 from datetime import datetime
+
+import arrow
+
 from .mapping import BAIJIAXING
 
 __all__ = [
@@ -14,12 +15,11 @@ __all__ = [
     'FormatTime', 'TakeByIndex'
 ]
 
-logger = logging.getLogger(__name__)
-
 
 class MetaClass(type):
     """将Magic类修改成原始类，比如MagicStr -> str
     """
+
     def __new__(mcs, name, bases, attrs, **kwargs):
         del attrs['__qualname__']
         return type.__new__(mcs, bases[0].__name__, bases, attrs, **kwargs)
@@ -126,6 +126,7 @@ class TakeByIndex(object):
 
 class TakeFirst(object):
     """获取可迭代对象的第一个不为空元素"""
+
     def __init__(self, default=None):
         self.default = default
 
@@ -350,4 +351,3 @@ class FormatTime(object):
                 return None
         else:
             return value.datetime
-
