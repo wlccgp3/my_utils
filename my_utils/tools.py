@@ -218,13 +218,26 @@ class Join(object):
         return MagicBase(self.separator.join)(values)
 
 
+class ToFloat(object):
+    def __init__(self, default=None):
+        self.default = default
+
+    def __call__(self, value: str):
+        try:
+            result = float(value.strip().replace(',', ''))
+        except Exception as e:
+            return self.default
+        else:
+            return result
+
+
 class ToInt(object):
     def __init__(self, default=None):
         self.default = default
 
     def __call__(self, value: str):
         try:
-            result = int(float(value))
+            result = int(ToFloat()(value))
         except Exception as e:
             return self.default
         else:
