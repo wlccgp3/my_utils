@@ -222,9 +222,12 @@ class ToFloat(object):
     def __init__(self, default=None):
         self.default = default
 
-    def __call__(self, value: str):
+    def __call__(self, value: [str, int, float]):
         try:
-            result = float(value.strip().replace(',', ''))
+            if isinstance(value, str):
+                result = float(value.strip().replace(',', ''))
+            else:
+                result = float(value)
         except Exception as e:
             return self.default
         else:
@@ -235,7 +238,7 @@ class ToInt(object):
     def __init__(self, default=None):
         self.default = default
 
-    def __call__(self, value: str):
+    def __call__(self, value: [str, int, float]):
         try:
             result = int(ToFloat()(value))
         except Exception as e:
