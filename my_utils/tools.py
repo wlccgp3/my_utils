@@ -344,16 +344,21 @@ class FormatTime(object):
     """格式化时间格式"""
 
     def __init__(self, pattern=None):
-        self.patterns = [
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}[\D]a',
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}',
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]a',
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}',
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]a',
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}',
-            r'YY{1,2}[\D]M{1,2}[\D]D{1,2}',
-            r'YY{1,2}[\D]M{1,2}',
+
+        patterns = [
+            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}[\D]a',
+            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}',
+            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]a',
+            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}',
+            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]a',
+            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}',
+            r'YYYY[\D]M{1,2}[\D]D{1,2}',
+            r'YYYY[\D]M{1,2}',
         ]
+        self.patterns = []
+        for pat in patterns:
+            self.patterns.extend([pat, pat[2:]])
+
         if pattern:
             self.patterns.insert(0, pattern)
 
