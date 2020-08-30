@@ -240,7 +240,7 @@ class ToInt(object):
 
     def __call__(self, value: [str, int, float]):
         try:
-            result = int(ToFloat()(value))
+            result = int(float(ToFloat()(value)))
         except Exception as e:
             return self.default
         else:
