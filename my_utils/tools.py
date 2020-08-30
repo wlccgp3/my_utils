@@ -12,7 +12,7 @@ from .mapping import BAIJIAXING
 __all__ = [
     'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
     'ReFind', 'ReSub', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
-    'FormatTime', 'TakeByIndex'
+    'FormatTime', 'TakeByIndex', 'ToFloat',
 ]
 
 
