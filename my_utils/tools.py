@@ -4,7 +4,7 @@
 
 import re
 from datetime import datetime
-from decimal import Decimal
+
 import arrow
 
 from .mapping import BAIJIAXING
@@ -231,7 +231,7 @@ class ToFloat(object):
         except Exception as e:
             return self.default
         else:
-            return Decimal(result)
+            return result
 
 
 class ToInt(object):
@@ -240,7 +240,7 @@ class ToInt(object):
 
     def __call__(self, value: [str, int, float]):
         try:
-            result = int(float(ToFloat()(value)))
+            result = int(ToFloat()(value))
         except Exception as e:
             return self.default
         else:
