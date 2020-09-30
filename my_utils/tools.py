@@ -144,6 +144,8 @@ class TakeAllTrue(object):
     """获取子元素bool为True的列表"""
 
     def __init__(self, default=None):
+        if default is None:
+            default = []
         self.default = default
 
     def __call__(self, values):
