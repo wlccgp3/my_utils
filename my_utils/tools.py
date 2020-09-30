@@ -12,7 +12,7 @@ from .mapping import BAIJIAXING
 __all__ = [
     'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
     'ReFind', 'ReSub', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
-    'FormatTime', 'TakeByIndex', 'ToFloat',
+    'FormatTime', 'TakeByIndex', 'ToFloat', 'TakeAllTrue',
 ]
 
 
@@ -110,6 +110,7 @@ class MagicDict(dict, metaclass=MetaClass):
         return sorted(self.items(), key=lambda item: item[1], reverse=reverse)
 
 
+# 以下对列表操作
 class TakeByIndex(object):
     """获取可迭代对象的一个元素，默认取第一个，默认返回None"""
 
@@ -139,6 +140,19 @@ class TakeFirst(object):
             return self.default
 
 
+class TakeAllTrue(object):
+    """获取子元素bool为True的列表"""
+
+    def __init__(self, default=None):
+        self.default = default
+
+    def __call__(self, values):
+        if values:
+            return [value for value in values if value]
+        else:
+            return self.default
+
+
 class Identity(object):
     """对输入不处理"""
 
@@ -146,6 +160,7 @@ class Identity(object):
         return values
 
 
+# 以下对列表子元素操作
 class Strip(object):
     def __init__(self, chars=None):
         self.chars = chars
