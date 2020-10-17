@@ -5,12 +5,14 @@ import os
 import random
 import string
 
-from .logger import logger
+from .logger import line_logger
 
 __all__ = [
     'random_password', 'get_dir_path', 'header_to_dict', 'cookie_to_dict',
     'form_encode', 'form_decode', 'base64_decode'
 ]
+
+logger = line_logger(__name__)
 
 
 def base64_decode(base64_str):

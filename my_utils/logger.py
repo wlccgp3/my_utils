@@ -1,21 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import json
 import logging
 
-__all__ = ['SHlogger', 'logger']
+__all__ = [
+    'color_logger', 'line_logger', 'json_logger'
+]
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter(
-    '%(asctime)s [%(levelname).1s] [%(filename)s %(funcName)s %(lineno)d] | %(message)s',
-)
-
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
+DATEFMT = '%Y-%m-%d %H:%M:%S'
 
 
 class ColoredStreamHandler(logging.StreamHandler):
@@ -23,7 +15,6 @@ class ColoredStreamHandler(logging.StreamHandler):
     RESET = '\033[0m'
 
     def format(self, record):
-        datefmt = '%Y-%m-%d %H:%M:%S'
 
         levelno = record.levelno
         if levelno == 10:
@@ -35,11 +26,11 @@ class ColoredStreamHandler(logging.StreamHandler):
         else:
             message = '{}%(message)s{}'.format(self.RED, self.RESET)
 
-        FORMAT = '%(asctime)s [%(process)s %(name)s %(lineno)d] |{} {}'.format(
+        fmt = '%(asctime)s [%(levelname).1s] [%(filename)s %(funcName)s %(lineno)d] |{} {}'.format(
             self.RESET, message
         )
-        fmt = logging.Formatter(fmt=FORMAT, datefmt=datefmt)
-        return fmt.format(record)
+        fmter = logging.Formatter(fmt=fmt, datefmt=DATEFMT)
+        return fmter.format(record)
 
     def emit(self, record):
         try:
@@ -52,17 +43,56 @@ class ColoredStreamHandler(logging.StreamHandler):
             self.handleError(record)
 
 
-class SHlogger(object):
-    """自定义logger
+def color_logger(name='color_logger', level=logging.DEBUG):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
 
-    >>> logger = SHlogger().logger
-    >>> logger = SHlogger(__name__).logger
-    """
+    if not logger.hasHandlers():
+        sh = ColoredStreamHandler()
+        sh.setLevel(level)
+        logger.addHandler(sh)
 
-    def __init__(self, name=None, level=logging.DEBUG):
-        self.logger = logging.getLogger(name)
-        if not self.logger.hasHandlers():
-            self.logger.setLevel(level)
-            self.sh = ColoredStreamHandler()
-            self.sh.setLevel(level)
-            self.logger.addHandler(self.sh)
+    return logger
+
+
+def line_logger(name='line_logger', level=logging.DEBUG):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+
+    if not logger.hasHandlers():
+        formatter = logging.Formatter(
+            '%(asctime)s [%(levelname).1s] [%(filename)s %(funcName)s %(lineno)d] | %(message)s',
+            datefmt=DATEFMT,
+        )
+        sh = logging.StreamHandler()
+        sh.setLevel(level)
+        sh.setFormatter(formatter)
+        logger.addHandler(sh)
+
+    return logger
+
+
+def json_logger(name='json_logger', level=logging.DEBUG):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+
+    if not logger.hasHandlers():
+        formatter = logging.Formatter(
+            json.dumps({
+                'datetime': '%(asctime)s',
+                'level': '%(levelname)s',
+                'file': '%(filename)s',
+                'function': '%(funcName)s',
+                'line': '%(lineno)d',
+                'message': '%(message)s',
+            }, ensure_ascii=False),
+            datefmt=DATEFMT,
+        )
+        sh = logging.StreamHandler()
+        sh.setLevel(level)
+        sh.setFormatter(formatter)
+
+        logger.addHandler(sh)
+
+    return logger
+

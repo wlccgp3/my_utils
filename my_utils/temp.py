@@ -4,9 +4,11 @@ import time
 
 import requests
 
-from .logger import logger
+from .logger import line_logger
 
 __all__ = ['get_proxy']
+
+logger = line_logger(__name__)
 
 
 def get_proxy(url):
