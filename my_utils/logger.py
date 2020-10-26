@@ -5,7 +5,7 @@ import logging
 
 
 __all__ = [
-    'color_logger', 'line_logger', 'json_logger'
+    'color_logger', 'line_logger', 'json_logger', 'logger'
 ]
 
 DATEFMT = '%Y-%m-%d %H:%M:%S'
@@ -45,25 +45,25 @@ class ColoredStreamHandler(logging.StreamHandler):
 
 
 def color_logger(name='color_logger', level=logging.DEBUG):
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    log = logging.getLogger(name)
+    log.setLevel(logging.DEBUG)
 
     sh = ColoredStreamHandler()
     sh.setLevel(level)
 
     sh_fp = f'{sh.name}_{sh.level}'
-    handler_seen = {f'{h.name}_{h.level}' for h in logger.handlers}
+    handler_seen = {f'{h.name}_{h.level}' for h in log.handlers}
     if sh_fp not in handler_seen:
-        logger.addHandler(sh)
+        log.addHandler(sh)
 
-    return logger
+    return log
 
 
 def line_logger(name='line_logger', level=logging.DEBUG):
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    log = logging.getLogger(name)
+    log.setLevel(logging.DEBUG)
 
-    # if not logger.hasHandlers():
+    # if not log.hasHandlers():
     formatter = logging.Formatter(
         '%(asctime)s [%(levelname).1s] [%(filename)s %(funcName)s %(lineno)d] | %(message)s',
         datefmt=DATEFMT,
@@ -73,16 +73,16 @@ def line_logger(name='line_logger', level=logging.DEBUG):
     sh.setFormatter(formatter)
 
     sh_fp = f'{sh.name}_{sh.level}_{sh.formatter._fmt}'
-    handler_seen = {f'{h.name}_{h.level}_{h.formatter._fmt}' for h in logger.handlers}
+    handler_seen = {f'{h.name}_{h.level}_{h.formatter._fmt}' for h in log.handlers}
     if sh_fp not in handler_seen:
-        logger.addHandler(sh)
+        log.addHandler(sh)
 
-    return logger
+    return log
 
 
 def json_logger(name='json_logger', level=logging.DEBUG):
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    log = logging.getLogger(name)
+    log.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter(
         json.dumps({
@@ -100,9 +100,11 @@ def json_logger(name='json_logger', level=logging.DEBUG):
     sh.setFormatter(formatter)
 
     sh_fp = f'{sh.name}_{sh.level}_{sh.formatter._fmt}'
-    handler_seen = {f'{h.name}_{h.level}_{h.formatter._fmt}' for h in logger.handlers}
+    handler_seen = {f'{h.name}_{h.level}_{h.formatter._fmt}' for h in log.handlers}
     if sh_fp not in handler_seen:
-        logger.addHandler(sh)
+        log.addHandler(sh)
 
-    return logger
+    return log
 
+
+logger = line_logger(__name__)
