@@ -86,7 +86,7 @@ class MagicDict(dict, metaclass=MetaClass):
 
     def __getitem__(self, item):
         if item not in self.keys():
-            self[item] = MagicDict()
+            return None
 
         result = super(MagicDict, self).__getitem__(item)
         if isinstance(result, dict):
