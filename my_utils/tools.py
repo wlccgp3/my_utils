@@ -10,7 +10,7 @@ import arrow
 from .mapping import BAIJIAXING
 
 __all__ = [
-    'MagicBase', 'MagicList', 'MagicStr', 'MagicDict', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
+    'MagicBase', 'MagicList', 'MagicStr', 'TakeFirst', 'Identity', 'Strip', 'Split', 'ReSplit',
     'ReFind', 'ReSub', 'Join', 'ToInt', 'ToAge', 'HighestDegree', 'DateToBack', 'CheckName', 'CheckSurname',
     'FormatTime', 'TakeByIndex', 'ToFloat', 'TakeAllTrue',
 ]
@@ -73,46 +73,6 @@ class MagicStr(str, metaclass=MetaClass):
 
     def __getitem__(self, item):
         return MagicBase(str.__getitem__)(self, item)
-
-
-class MagicDict(dict, metaclass=MetaClass):
-    """基于dict封装，可以点方式获取元素，取不到元素不报错，返回None
-
-    >>> MagicDict({'name': 'miles'}).name
-    'miles'
-    >>> print(MagicDict({'name': 'miles'}).age)
-    None
-    """
-
-    def __getitem__(self, item):
-        if item not in self.keys():
-            return None
-
-        result = super(MagicDict, self).__getitem__(item)
-        if isinstance(result, dict):
-            return MagicDict(result)
-        else:
-            return result
-
-    def __setitem__(self, name, value):
-        if isinstance(value, (list, tuple)):
-            value = [self.__class__(x) if isinstance(x, dict) else x for x in value]
-        elif isinstance(value, dict) and not isinstance(value, self.__class__):
-            value = self.__class__(value)
-        super(MagicDict, self).__setitem__(name, value)
-
-    __getattr__ = __getitem__
-    __setattr__ = __setitem__
-
-    def incr(self, value, amount=1):
-        exists = self.get(value)
-        if exists is None:
-            self.setdefault(value, amount)
-        else:
-            self[value] += amount
-
-    def sort(self, reverse=False):
-        return sorted(self.items(), key=lambda item: item[1], reverse=reverse)
 
 
 # 以下对列表操作
