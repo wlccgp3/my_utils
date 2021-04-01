@@ -17,7 +17,7 @@ with open(os.path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 setuptools.setup(
     name='my_utils',
-    version=datetime.now().strftime('%Y-%m-%d'),
+    version=datetime.now().strftime('%Y.%m.%d'),
     author='Miles',
     author_email='15070926843@163.com',
     description=DESCRIPTION,
