@@ -71,6 +71,9 @@ class MagicStr(str, metaclass=MetaClass):
     None
     """
 
+    def __str__(self, *args, **kwargs):
+        return super(MagicStr, self).__str__(*args, **kwargs)
+
     def __getitem__(self, item):
         return MagicBase(str.__getitem__)(self, item)
 
