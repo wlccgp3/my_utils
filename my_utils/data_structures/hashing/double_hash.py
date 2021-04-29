@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from hash_table import HashTable
 from number_theory.prime_numbers import next_prime, check_prime
 

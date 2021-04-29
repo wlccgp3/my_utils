@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # 该模块主要用于loader做处理函数，也可以单独使用
 
