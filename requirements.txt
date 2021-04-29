@@ -5,4 +5,3 @@ addict
 jmespath==0.9.4
 fonttools==3.41.2
 reportlab==3.5.21
-rich==10.1.0
