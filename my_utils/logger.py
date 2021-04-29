@@ -50,8 +50,8 @@ def color_logger(name='color_logger', level=logging.DEBUG, handler=None):
     handler = handler or ColoredStreamHandler()
     handler.setLevel(level)
 
-    sh_fp = f'{handler.name}_{handler.level}_{handler.formatter._fmt}'
-    handler_seen = {f'{h.name}_{h.level}_{h.formatter._fmt}' for h in log.handlers}
+    sh_fp = f'{handler.name}_{handler.level}'
+    handler_seen = {f'{h.name}_{h.level}' for h in log.handlers}
     if sh_fp not in handler_seen:
         log.addHandler(handler)
 
