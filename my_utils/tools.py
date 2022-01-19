@@ -330,14 +330,15 @@ class FormatTime(object):
     def __init__(self, pattern=None):
 
         patterns = [
-            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}[\D]a',
-            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]s{1,2}',
-            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}[\D]a',
-            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]m{1,2}',
-            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}[\D]a',
-            r'YYYY[\D]M{1,2}[\D]D{1,2}[\D]+H{1,2}',
-            r'YYYY[\D]M{1,2}[\D]D{1,2}',
-            r'YYYY[\D]M{1,2}',
+            r'[\D*]YYYY[\D]M[\D]D[\D+]H[\D]m[\D]s[\D]a[\D*]',
+            r'[\D*]YYYY[\D]M[\D]D[\D+]H[\D]m[\D]s[\D*]',
+            r'[\D*]YYYY[\D]M[\D]D[\D+]H[\D]m[\D]a[\D*]',
+            r'[\D*]YYYY[\D]M[\D]D[\D+]H[\D]m[\D*]',
+            r'[\D*]YYYY[\D]M[\D]D[\D+]H[\D]a[\D*]',
+            r'[\D*]YYYY[\D]M[\D]D[\D+]H[\D*]',
+            r'[\D*]YYYY[\D]M[\D]D[\D*]',
+            r'[\D*]YYYY[\D]M[\D*]',
+            r'[\D*]YYYY[\D*]',
         ]
         self.patterns = []
         for pat in patterns:

@@ -1,4 +1,4 @@
-arrow==0.12.0
-parsel==1.5.1
+arrow==1.2.1
+parsel==1.6.0
 requests
-jmespath==0.9.4
+jmespath=0.10.0
